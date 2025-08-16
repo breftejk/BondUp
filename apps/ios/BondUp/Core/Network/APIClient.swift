@@ -19,31 +19,35 @@ final class APIClient {
 
     // MARK: - Requests
 
-    func post<T: Decodable>(_ path: String, body: Encodable) async throws -> T {
+    func post<T: Decodable>(_ path: String, body: Encodable? = nil) async throws -> T {
         return try await sendRequest(path: path, method: "POST", body: body)
     }
 
     func get<T: Decodable>(_ path: String) async throws -> T {
-        return try await sendRequest(path: path, method: "GET", body: nil as EmptyBody?)
+        return try await sendRequest(path: path, method: "GET", body: nil)
     }
 
-    func patch<T: Decodable>(_ path: String, body: Encodable) async throws -> T {
+    func patch<T: Decodable>(_ path: String, body: Encodable? = nil) async throws -> T {
         return try await sendRequest(path: path, method: "PATCH", body: body)
+    }
+    
+    func delete<T: Decodable>(_ path: String) async throws -> T {
+        return try await sendRequest(path: path, method: "DELETE", body: nil)
     }
 
     // MARK: - Private
 
-    private func sendRequest<T: Decodable, B: Encodable>(path: String, method: String, body: B?) async throws -> T {
+    private func sendRequest<T: Decodable>(path: String, method: String, body: Encodable? = nil) async throws -> T {
         let url = baseURL.appendingPathComponent(path)
         var request = URLRequest(url: url)
         request.httpMethod = method
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
         if let token = authToken {
             request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
 
         if let body = body {
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = try JSONEncoder().encode(body)
         }
 

@@ -34,7 +34,6 @@ export async function verifyGoogleToken(
     provider: 'google',
     providerId: payload.sub,
     email: payload.email || null,
-    name: payload.name || null,
     nickname: payload.given_name || null,
   });
 
@@ -75,7 +74,6 @@ export async function verifyAppleToken(
     provider: 'apple',
     providerId: payload.sub,
     email: payload.email || null,
-    name: payload.name || null,
     nickname: null,
   });
 
@@ -94,7 +92,6 @@ type ProviderProfile = {
   provider: 'google' | 'apple';
   providerId: string;
   email: string | null;
-  name: string | null;
   nickname: string | null;
 };
 
@@ -113,7 +110,6 @@ async function findOrCreateUser(
   if (!user) {
     user = repo.create({
       email: profile.email,
-      name: profile.name,
       nickname: profile.nickname,
       googleId: profile.provider === 'google' ? profile.providerId : null,
       appleId: profile.provider === 'apple' ? profile.providerId : null,

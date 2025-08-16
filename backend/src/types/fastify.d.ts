@@ -1,6 +1,7 @@
 import '@fastify/oauth2';
 import '@fastify/jwt';
 import 'typeorm';
+import { createClient } from 'redis';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -13,5 +14,7 @@ declare module 'fastify' {
     orm: {
       getRepository: (entity: any) => any;
     };
+    redis: ReturnType<typeof createClient>;
+    redisSubscriber: ReturnType<typeof createClient>;
   }
 }

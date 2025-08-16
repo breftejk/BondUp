@@ -15,8 +15,5 @@ export class User {
   email: string | null;
 
   @Column({ type: 'varchar', nullable: true })
-  name: string | null;
-
-  @Column({ type: 'varchar', nullable: true })
   nickname: string | null;
 }

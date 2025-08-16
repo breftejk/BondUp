@@ -11,11 +11,7 @@ export const EnvSchema = z.object({
   PORT: z.coerce.number().default(3000),
   DATABASE_URL: z.string(),
   JWT_SECRET: z.string().min(32),
-  REDIS_URL: z.string().optional(),
-  APNS_KEY_ID: z.string().optional(),
-  APNS_TEAM_ID: z.string().optional(),
-  APNS_PRIVATE_KEY: z.string().optional(),
-  FCM_SERVER_KEY: z.string().optional(),
+  REDIS_URL: z.string(),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

@@ -4,6 +4,8 @@ import { env } from './config';
 // plugins
 import jwtPlugin from './plugins/jwt.plugin';
 import typeormPlugin from './plugins/typeorm.plugin';
+import realtimePlugin from './plugins/realtime.plugin';
+import redisPlugin from './plugins/redis.plugin';
 
 // modules
 import authGoogleRoute from './modules/auth/routes/google.route';
@@ -12,11 +14,6 @@ import authAppleRoute from './modules/auth/routes/apple.route';
 import userMeRoute from './modules/user/routes/me.route';
 import setNicknameRoute from './modules/user/routes/setNickname.route';
 
-import generateInviteRoute from './modules/bond/routes/generateInvite.route';
-import acceptInviteRoute from './modules/bond/routes/acceptInvite.route';
-import listBondsRoute from './modules/bond/routes/listBonds.route';
-import unbondRoute from './modules/bond/routes/unbound.route';
-
 export class App {
   private fastify: FastifyInstance;
 
@@ -24,11 +21,21 @@ export class App {
     this.fastify = Fastify({
       logger: env.DOPPLER_ENVIRONMENT !== 'prd',
     });
+
+    this.fastify.setErrorHandler((err, req, reply) => {
+      if ((err as any).statusCode) {
+        return reply.code((err as any).statusCode).send({ error: err.message });
+      }
+
+      reply.code(400).send({ error: err.message });
+    });
   }
 
   private async registerPlugins() {
     await this.fastify.register(typeormPlugin);
     await this.fastify.register(jwtPlugin);
+    await this.fastify.register(redisPlugin);
+    await this.fastify.register(realtimePlugin);
   }
 
   private async registerRoutes() {
@@ -37,15 +44,35 @@ export class App {
 
     await this.fastify.register(userMeRoute);
     await this.fastify.register(setNicknameRoute);
+  }
 
-    await this.fastify.register(generateInviteRoute);
-    await this.fastify.register(acceptInviteRoute);
-    await this.fastify.register(listBondsRoute);
-    await this.fastify.register(unbondRoute);
+  async registerAppleAppSiteAssociate() {
+    this.fastify.get(
+      '/.well-known/apple-app-site-association',
+      async (request, reply) => {
+        reply.header('Content-Type', 'application/json');
+        return {
+          applinks: {
+            details: [
+              {
+                appID: 'LXHBBTZY2Q.com.marcinkondrat.BondUp',
+                paths: ['/invite/*'],
+              },
+            ],
+          },
+        };
+      },
+    );
+
+    this.fastify.get('/invite/:code', async (req, reply) => {
+      const { code } = req.params as { code: string };
+      reply.redirect(`bondup://invite/${code}`);
+    });
   }
 
   async start() {
     try {
+      this.registerAppleAppSiteAssociate();
       await this.registerPlugins();
       await this.registerRoutes();
 
