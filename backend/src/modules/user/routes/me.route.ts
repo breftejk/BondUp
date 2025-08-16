@@ -8,6 +8,8 @@ export default async function (fastify: FastifyInstance) {
     const repo = fastify.orm.getRepository(User);
     const user = await repo.findOneByOrFail({ id: userId });
 
+    console.log('Fetching user:', userId);
+
     return {
       id: user.id,
       nickname: user.nickname,

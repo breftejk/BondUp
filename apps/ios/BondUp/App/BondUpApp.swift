@@ -14,6 +14,16 @@ struct BondUpApp: App {
     var body: some Scene {
         WindowGroup {
             switch coordinator.state {
+            case .initializing:
+                VStack {
+                        Image("AppIcon")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 120, height: 120)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color(.systemBackground))
+                
             case .signIn:
                 SignInView(coordinator: coordinator)
                     .environmentObject(coordinator)

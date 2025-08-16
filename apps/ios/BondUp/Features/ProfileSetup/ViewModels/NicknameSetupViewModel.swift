@@ -33,9 +33,12 @@ final class NicknameSetupViewModel: ObservableObject {
 
             coordinator.session?.nickname = nickname
             coordinator.state = .main
+        } catch let apiError as APIError {
+            errorMessage = apiError.message
         } catch {
-            isLoading = false
             errorMessage = error.localizedDescription
         }
+        
+        isLoading = false
     }
 }

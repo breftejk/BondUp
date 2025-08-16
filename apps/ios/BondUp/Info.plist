@@ -6,13 +6,13 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
-    <key>NSExceptionDomains</key>
-    <dict>
-       <key>localhost</key>
-       <dict>
-         <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-         <true/>
-       </dict>
-    </dict>
+	<key>NSExceptionDomains</key>
+	<dict>
+		<key>172.20.10.14</key>
+		<dict>
+			<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+			<true/>
+		</dict>
+	</dict>
 </dict>
 </plist>

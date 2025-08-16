@@ -10,6 +10,7 @@ import Combine
 import SwiftUI
 
 enum AppState {
+    case initializing
     case signIn
     case setupProfile
     case main
@@ -17,7 +18,7 @@ enum AppState {
 
 @MainActor
 final class AppCoordinator: ObservableObject {
-    @Published var state: AppState = .signIn
+    @Published var state: AppState = .initializing
     @Published var session: UserSession?
 
     init() {
@@ -25,22 +26,18 @@ final class AppCoordinator: ObservableObject {
     }
 
     func loadSession() async {
-            guard let token = KeychainService.shared.loadToken() else {
-                self.state = .signIn
-                return
-            }
-
+        if let token = KeychainService.shared.loadToken() {
             APIClient.shared.authToken = token
-
             do {
                 let me: MeResponse = try await APIClient.shared.get("/me")
-
                 self.session = UserSession(token: token, nickname: me.nickname, userId: me.id)
-
                 self.state = (me.nickname == nil) ? .setupProfile : .main
             } catch {
                 KeychainService.shared.clearToken()
                 self.state = .signIn
             }
+        } else {
+            self.state = .signIn
         }
+    }
 }
