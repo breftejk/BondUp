@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { User } from '../../auth/entities/user.entity';
+import { User } from '../entities/user.entity';
 
 export default async function (fastify: FastifyInstance) {
   fastify.patch(

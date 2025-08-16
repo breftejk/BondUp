@@ -1,13 +1,9 @@
 import { FastifyInstance } from 'fastify';
-import { User } from '../entities/user.entity';
-import { Repository } from 'typeorm';
 import { google } from 'googleapis';
 import * as jwt from 'jsonwebtoken';
 import * as jwksClient from 'jwks-rsa';
-
 import { env } from '../../../config';
-
-/* --------------------------- VERIFY GOOGLE TOKEN --------------------------- */
+import { UserService } from '../../user/services/user.service';
 
 const googleClient = new google.auth.OAuth2();
 
@@ -30,7 +26,8 @@ export async function verifyGoogleToken(
     throw new Error('Invalid Google token payload');
   }
 
-  const user = await findOrCreateUser(fastify, {
+  const userService = new UserService(fastify);
+  const user = await userService.findOrCreate({
     provider: 'google',
     providerId: payload.sub,
     email: payload.email || null,
@@ -70,7 +67,8 @@ export async function verifyAppleToken(
     issuer: 'https://appleid.apple.com',
   });
 
-  const user = await findOrCreateUser(fastify, {
+  const userService = new UserService(fastify);
+  const user = await userService.findOrCreate({
     provider: 'apple',
     providerId: payload.sub,
     email: payload.email || null,
@@ -84,38 +82,4 @@ export async function verifyAppleToken(
     token: internalToken,
     requiresProfile,
   };
-}
-
-/* ---------------------------- COMMON -------------------------------------- */
-
-type ProviderProfile = {
-  provider: 'google' | 'apple';
-  providerId: string;
-  email: string | null;
-  nickname: string | null;
-};
-
-async function findOrCreateUser(
-  fastify: FastifyInstance,
-  profile: ProviderProfile,
-): Promise<User> {
-  const repo: Repository<User> = fastify.orm.getRepository(User);
-  const whereClause =
-    profile.provider === 'google'
-      ? { googleId: profile.providerId }
-      : { appleId: profile.providerId };
-
-  let user = await repo.findOne({ where: whereClause });
-
-  if (!user) {
-    user = repo.create({
-      email: profile.email,
-      nickname: profile.nickname,
-      googleId: profile.provider === 'google' ? profile.providerId : null,
-      appleId: profile.provider === 'apple' ? profile.providerId : null,
-    });
-    await repo.save(user);
-  }
-
-  return user;
 }
