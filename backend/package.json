@@ -12,13 +12,22 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.2.0",
     "nodemon": "^3.1.10",
+    "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@fastify/jwt": "^10.0.0",
+    "@fastify/oauth2": "^8.1.2",
     "fastify": "^5.4.0",
+    "fastify-plugin": "^5.0.1",
+    "googleapis": "^156.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.2.0",
+    "pg": "^8.16.3",
     "typeorm": "^0.3.25",
     "zod": "^4.0.17"
   }

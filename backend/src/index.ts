@@ -1,11 +1,11 @@
-import { App } from './app'
+import { App } from './app';
 
 async function main() {
-    const app = new App()
-    await app.start()
+  const app = new App();
+  await app.start();
 }
 
-main().catch(err => {
-    console.error(err)
-    process.exit(1)
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
 });
