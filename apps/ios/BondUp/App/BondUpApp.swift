@@ -32,8 +32,27 @@ struct BondUpApp: App {
                 NicknameSetupView(coordinator: coordinator)
 
             case .main:
-                Text("Main App View")
-                    .environmentObject(coordinator)
+                TabView {
+                        Text("Bond")
+                            .tabItem {
+                                Label("Bond", systemImage: "heart.fill")
+                            }
+
+                        Text("Learn")
+                            .tabItem {
+                                Label("Learn", systemImage: "book.fill")
+                            }
+
+                        Text("Discover")
+                            .tabItem {
+                                Label("Discover", systemImage: "person.crop.circle.badge.plus")
+                            }
+ 
+                        Text("Profile")
+                            .tabItem {
+                                Label("Profile", systemImage: "person.fill")
+                            }
+                    }
             }
         }
     }

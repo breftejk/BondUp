@@ -12,6 +12,11 @@ import authAppleRoute from './modules/auth/routes/apple.route';
 import userMeRoute from './modules/user/routes/me.route';
 import setNicknameRoute from './modules/user/routes/setNickname.route';
 
+import generateInviteRoute from './modules/bond/routes/generateInvite.route';
+import acceptInviteRoute from './modules/bond/routes/acceptInvite.route';
+import listBondsRoute from './modules/bond/routes/listBonds.route';
+import unbondRoute from './modules/bond/routes/unbound.route';
+
 export class App {
   private fastify: FastifyInstance;
 
@@ -32,6 +37,11 @@ export class App {
 
     await this.fastify.register(userMeRoute);
     await this.fastify.register(setNicknameRoute);
+
+    await this.fastify.register(generateInviteRoute);
+    await this.fastify.register(acceptInviteRoute);
+    await this.fastify.register(listBondsRoute);
+    await this.fastify.register(unbondRoute);
   }
 
   async start() {
