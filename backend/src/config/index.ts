@@ -9,11 +9,8 @@ const Config = z.object({
 
 const parsed = Config.safeParse(process.env);
 if (!parsed.success) {
-  console.error(
-    'Invalid environment variables',
-    parsed.error.issues.map((issue) => `\n - ${issue.message}`).join(''),
-  );
-  process.exit(1);
+  const details = parsed.error.issues.map((issue) => ` - ${issue.message}`).join('\n');
+  throw new Error(`Invalid environment variables:\n${details}`);
 }
 
 export const config = parsed.data;
