@@ -5,11 +5,15 @@ const Config = z.object({
   LOG_LEVEL: z
     .enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace'])
     .default('info'),
+  APPLE_SIWA_CLIENT_ID: z.string().min(1, 'APPLE_SIWA_CLIENT_ID is required'),
+  GOOGLE_CLIENT_ID: z.string().min(1, 'GOOGLE_CLIENT_ID is required'),
 });
 
 const parsed = Config.safeParse(process.env);
 if (!parsed.success) {
-  const details = parsed.error.issues.map((issue) => ` - ${issue.message}`).join('\n');
+  const details = parsed.error.issues
+    .map((issue) => ` - ${issue.message}`)
+    .join('\n');
   throw new Error(`Invalid environment variables:\n${details}`);
 }
 
