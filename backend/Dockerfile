@@ -25,7 +25,7 @@ COPY . .
 
 # Run migrations before starting dev server
 ENTRYPOINT ["doppler", "run", "--"]
-CMD ["sh", "-c", "pnpm prisma migrate dev --name init --skip-seed && pnpm run start:dev"]
+CMD ["sh", "-c", "pnpm prisma migrate deploy --schema ./prisma/schema.prisma && pnpm run start:dev"]
 
 # ───────────────────── Production stage ─────────────────────
 FROM node:22-alpine AS prod
