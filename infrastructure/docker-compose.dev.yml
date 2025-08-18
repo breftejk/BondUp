@@ -14,6 +14,7 @@ services:
     volumes:
       - ./caddy/Caddyfile.dev:/etc/caddy/Caddyfile
   cloudflared:
+    container_name: cloudflared
     image: cloudflare/cloudflared:latest
     command: tunnel run bondup-tunnel
     environment:
