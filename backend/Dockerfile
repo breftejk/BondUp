@@ -23,6 +23,8 @@ RUN npm install -g pnpm && pnpm install
 
 COPY . .
 
+RUN pnpm prisma generate
+
 # Run migrations before starting dev server
 ENTRYPOINT ["doppler", "run", "--"]
 CMD ["sh", "-c", "pnpm prisma migrate deploy --schema ./prisma/schema.prisma && pnpm run start:dev"]
@@ -40,6 +42,8 @@ COPY --from=builder /app/pnpm-lock.yaml ./
 RUN npm install -g pnpm && pnpm install --prod --frozen-lockfile
 
 COPY --from=builder /app/dist ./dist
+
+RUN pnpm prisma generate
 
 ENTRYPOINT ["doppler", "run", "--"]
 CMD ["sh", "-c", "pnpm prisma migrate deploy --skip-seed && pnpm run start:prod"]
