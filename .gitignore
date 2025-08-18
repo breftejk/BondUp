@@ -41,6 +41,7 @@ coverage
 /backend/.env*
 /backend/.nyc_output
 /backend/coverage
+/backend/.pnpm-store
 
 # ───────────── macOS ─────────────
 *.DS_Store

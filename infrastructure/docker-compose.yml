@@ -1,13 +1,23 @@
+name: bondup
 services:
   backend:
-    container_name: bondup_backend
     build:
       dockerfile: Dockerfile
       context: ../backend
   caddy:
-    container_name: bondup_caddy
     image: caddy:2
     ports:
       - '80:80'
     depends_on:
       - backend
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: bondup
+      POSTGRES_USER: bondup
+      POSTGRES_PASSWORD: bondup
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
