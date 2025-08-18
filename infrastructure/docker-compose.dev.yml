@@ -1,0 +1,26 @@
+services:
+  backend:
+    build:
+      target: dev
+    environment:
+      - DOPPLER_TOKEN=${DOPPLER_TOKEN}
+      - DOPPLER_PROJECT=bondup-backend
+      - DOPPLER_CONFIG=dev
+      - NODE_ENV=development
+    volumes:
+      - ../backend:/app
+      - /app/node_modules
+  caddy:
+    volumes:
+      - ./caddy/Caddyfile.dev:/etc/caddy/Caddyfile
+  cloudflared:
+    container_name: bondup_cloudflared
+    image: cloudflare/cloudflared:latest
+    command: tunnel run bondup-tunnel
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARED_TUNNEL_TOKEN}
+      - CLOUDFLARED_TUNNEL_CREDENTIALS=${CLOUDFLARED_TUNNEL_CREDENTIALS}
+    volumes:
+      - ./cloudflared/config.yml:/etc/cloudflared/config.yml
+    depends_on:
+      - caddy

@@ -1,6 +1,5 @@
 # Node / JavaScript
 */node_modules
-*pnpm-lock.yaml
 *yarn.lock
 *package-lock.json
 *.log
@@ -33,3 +32,6 @@ apps/ios/Package.resolved
 apps/ios/*.app
 apps/ios/*.ipa
 apps/ios/*.dSYM
+
+# .env
+.env*
