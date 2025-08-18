@@ -1,0 +1,7 @@
+tunnel: bondup-tunnel
+
+ingress:
+  - hostname: api.bondup.dev
+    service: http://caddy:80
+
+  - service: http_status:404

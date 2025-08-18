@@ -1,0 +1,3 @@
+http://api.bondup.dev {
+  reverse_proxy backend:3000
+}

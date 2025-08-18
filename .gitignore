@@ -1,35 +1,68 @@
-# Node / JavaScript
-*/node_modules
-*pnpm-lock.yaml
-*yarn.lock
-*package-lock.json
+# ───────────── Global Node / JavaScript ─────────────
+node_modules
+yarn.lock
+package-lock.json
 *.log
 *.tmp
 *.cache
+.DS_Store
 
-# macOS system files
+# Temp / diagnostic files
+.temp
+.tmp
+logs
+*.pid
+*.seed
+*.pid.lock
+report.*.json
+
+# Test coverage
+coverage
+.nyc_output
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Dotenv files
+.env
+.env.local
+.env.*.local
+
+# ───────────── Backend (Fastify / Nest) ─────────────
+/backend/dist
+/backend/build
+/backend/node_modules
+/backend/logs
+/backend/*.log
+/backend/.env*
+/backend/.nyc_output
+/backend/coverage
+
+# ───────────── macOS ─────────────
 *.DS_Store
 
-# Xcode / iOS build output
-apps/ios/build/
-apps/ios/DerivedData/
-
-# Xcode user-specific data
-apps/ios/**/*.xcworkspace/xcuserdata/
-apps/ios/**/*.xcodeproj/xcuserdata/
-apps/ios/**/*.xcodeproj/project.xcworkspace/xcuserdata/
-apps/ios/**/*.xcuserstate
-apps/ios/**/*.xcuserdatad
-apps/ios/**/*.moved-aside
+# ───────────── iOS App ─────────────
+/apps/ios/build/
+/apps/ios/DerivedData/
+/apps/ios/**/*.xcworkspace/xcuserdata/
+/apps/ios/**/*.xcodeproj/xcuserdata/
+/apps/ios/**/*.xcodeproj/project.xcworkspace/xcuserdata/
+/apps/ios/**/*.xcuserstate
+/apps/ios/**/*.xcuserdatad
+/apps/ios/**/*.moved-aside
 
 # CocoaPods
-apps/ios/Pods/
+/apps/ios/Pods/
 
 # Swift Package Manager
-apps/ios/.build/
-apps/ios/Package.resolved
+/apps/ios/.build/
+/apps/ios/Package.resolved
 
 # Build artifacts
-apps/ios/*.app
-apps/ios/*.ipa
-apps/ios/*.dSYM
+/apps/ios/*.app
+/apps/ios/*.ipa
+/apps/ios/*.dSYM

@@ -1,0 +1,13 @@
+services:
+  backend:
+    container_name: bondup_backend
+    build:
+      dockerfile: Dockerfile
+      context: ../backend
+  caddy:
+    container_name: bondup_caddy
+    image: caddy:2
+    ports:
+      - '80:80'
+    depends_on:
+      - backend
