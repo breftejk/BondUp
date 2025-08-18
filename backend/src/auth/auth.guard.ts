@@ -13,19 +13,23 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    const provider = request.headers['x-provider'];
-    const authHeader = request.headers['authorization'];
+    const providerHeader = String(request.headers['x-provider'] || '').toLowerCase();
+    const authHeader = String(request.headers['authorization'] || '');
 
-    if (!provider || !authHeader) {
+    if (!providerHeader || !authHeader) {
       throw new UnauthorizedException('Missing provider or token');
     }
 
-    const [, idToken] = (authHeader as string).split(' ');
+    if (providerHeader !== 'google' && providerHeader !== 'apple') {
+      throw new UnauthorizedException('Unsupported provider');
+    }
 
-    const user = await this.authService.login(
-      provider as 'google' | 'apple',
-      idToken,
-    );
+    const [scheme, idToken] = authHeader.split(' ');
+    if (scheme?.toLowerCase() !== 'bearer' || !idToken) {
+      throw new UnauthorizedException('Invalid authorization header');
+    }
+
+    const user = await this.authService.login(providerHeader as 'google' | 'apple', idToken);
 
     request.user = user;
     return true;
