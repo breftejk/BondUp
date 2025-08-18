@@ -20,9 +20,11 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm && pnpm install
 
+RUN npm install -g @nestjs/cli
+
 COPY . .
 ENTRYPOINT ["doppler", "run", "--"]
-CMD ["pnpm", "run", "dev"]
+CMD ["pnpm", "run", "start:dev"]
 
 # Production stage
 FROM node:22-alpine AS prod
